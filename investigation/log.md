@@ -20,7 +20,7 @@ $ awk '$9==500' access.log | wc -l
 
 Use _awk_ command to filter lines.
 
-An input line is normally made up of fields separated by white space. So you can get http status with $9.
+An input line is normally made up of fields separated by white space. So you can get http status code with $9.
 
 ```
 127.0.0.1                 => $1
@@ -48,7 +48,7 @@ Firefox/25.0"             => $21
 
 ## Your boss ask you "When start the error?"
 
-You have to find first line which http status is 500.
+You have to find first line which http status code is 500.
 
 ### Solution
 
@@ -60,7 +60,7 @@ Use _head_ command and _n_ option to display first line.
 
 ## Your boss ask you "When stop the error?"
 
-You have to find last line which http status is 500.
+You have to find last line which http status code is 500.
 
 ### Solution
 
@@ -69,3 +69,41 @@ $ awk '$9==500' access.log | tail -n 1
 ```
 
 Use _tail_ command and _n_ option to display last line.
+
+## Your boss ask you "Is there any difference of the number of access between today and yesterday's log?"
+
+You have to compare today's access log and yesterday's one.
+
+### Solution
+
+```shell
+$ wc -l access.log
+$ wc -l access.log.yesterday
+```
+
+Compare number of the lines(access).
+
+### Your boss ask you again "from 10:05 to 19:45 please"
+
+#### Solution
+
+```shell
+$ sed -n '/2013:10:05/,/2013:19:45/p' access.log | wc -l
+$ sed -n '/2013:10:05/,/2013:19:45/p' access.log.yesterday | wc -l
+```
+
+Use _sed_ command to slice log data.
+
+## Your boss ask you "How many count of each http status code?"
+
+You have to count not only 500 but also 200, 404 and so on.
+
+### Solution
+
+```shell
+$ awk '{ print $9 }' access.log | sort | uniq -c
+```
+
+Use _sort_ and _uniq_ command to count each http status code.
+
+First process only output http status code. Second process sort http status codes. Third process output unique status code with the count of the number.
