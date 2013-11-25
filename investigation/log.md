@@ -88,11 +88,24 @@ Compare number of the lines(access).
 #### Solution
 
 ```shell
-$ sed -n '/2013:10:05/,/2013:19:45/p' access.log | wc -l
-$ sed -n '/2013:10:05/,/2013:19:45/p' access.log.yesterday | wc -l
+$ sed -n '/2013:10:05/,/2013:19:46/p' access.log | wc -l
+$ sed -n '/2013:10:05/,/2013:19:46/p' access.log.yesterday | wc -l
 ```
 
 Use _sed_ command to slice log data.
+
+And there are two precautions.
+
+First end pattern should be **2013:19:46** because _sed_ command is finished immediately after matched end pattern.
+
+```
+2013:19:45:00 <- finish sed command in this line if /2013:19:45/
+2013:19:45:23 <- miss this line
+2013:19:45:48 <- miss this line
+2013:19:46:02
+```
+
+Second from first matched line to end of lines are returned if not matched end pattern.
 
 ## Your boss ask you "How many count of each http status code?"
 
