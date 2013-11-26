@@ -46,6 +46,26 @@ Gecko/20100101            => $20
 Firefox/25.0"             => $21
 ```
 
+### Your boss ask you again "Ignore Googlebot"
+
+#### Solution
+
+```shell
+$ awk '$9==500' access.log | awk -F\" '$6 !~ /Googlebot/' | wc -l
+```
+
+Use _F_ option to change field separator from white space to double quote. So you can get UserAgent with $6. And matched records whoes sixth field does not contain "Googlebot".
+
+```
+127.0.0.1 - - [23/Nov/2013:14:30:15 +0900]                                        => $1
+GET /search?keyword=test HTTP/1.0                                                 => $2
+ 500 2326                                                                         => $3
+http://www.example.com/                                                           => $4
+                                                                                  => $5
+Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:25.0) Gecko/20100101 Firefox/25.0 => $6
+                                                                                  => $7
+```
+
 ## Your boss ask you "When start the error?"
 
 You have to find first line which http status code is 500.
